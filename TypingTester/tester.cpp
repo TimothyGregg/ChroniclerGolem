@@ -24,16 +24,25 @@ int main() {
 	std::cout << "\nLength of str : " << str.length();
 	std::cout << "\nLength of intervals: " << intervals.size() << "\n";
 	
+	int countCharsPrinted{ 0 };
 	// Print tab-spaced str
 	for (int it{ 0 }; it < str.length(); ++it) {
-		std::cout << str[it] << "\t";
+		std::cout << str[it] << "|";
+		++countCharsPrinted;
 	}
 	std::cout << "\n";
 
+	int countIntervalsPrinted{ 0 };
 	// Print tab-spaced intervals
 	for (int it{ 0 }; it < intervals.size(); ++it) {
 		std::cout << intervals[it] << "\t";
+		++countIntervalsPrinted;
 	}
+
+	std::cout << "\n\nNumber of chars printed:\t" << countCharsPrinted << "\n";
+	std::cout << "Number of intervals printed:\t" << countIntervalsPrinted;
+
+	// TODO: Time after spaces, time after punctuation, time between letters, time between similar letters.
 
 	return 0;
 }
