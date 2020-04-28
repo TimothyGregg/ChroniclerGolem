@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{843DD7A8-DF9D-4CE6-97D3-21C6D2831286}</ProjectGuid>
-    <RootNamespace>TypingTester</RootNamespace>
+    <ProjectGuid>{C27155D6-507D-46B6-A38C-F867696D0F75}</ProjectGuid>
+    <RootNamespace>Golem</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -83,7 +83,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -138,15 +138,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Declaration.cpp" />
-    <ClCompile Include="tester.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Printer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Declaration.h" />
-    <ClInclude Include="tester.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Declaration_Formatted.txt" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Printer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

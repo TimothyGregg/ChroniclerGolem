@@ -3,15 +3,14 @@
 #include <random>
 #include <thread>
 #include <vector>
-#include "tester.h"
 
 // Include Functions
-bool isLetter(char character);
-bool isPunctuation(char character);
-bool isSpecialCharacter(char character);
 
 // Functions defined below
 std::vector<int> buildGapVector(std::string str);
+bool isLetter(char character);
+bool isPunctuation(char character);
+bool isSpecialCharacter(char character);
 
 /* 
 Random numbers on a normal curve within a range
@@ -79,4 +78,44 @@ std::vector<int> buildGapVector(std::string str) {
     }
 
     return gaps;
+}
+
+bool isLetter(char character) {
+    return (((character >= 65) && (character <= 90)) || ((character >= 97) && (character <= 122)));
+}
+
+bool isPunctuation(char character) {
+    switch ((int)character) {
+    case 33: // !
+    case 46: // .
+    case 63: // ?
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool isSpecialCharacter(char character) {
+    int characterInt{ (int)character };
+    // Dodge "!" at the beginning
+    if ((characterInt >= 34) && (characterInt <= 45)) {
+        return true;
+    }
+    // Dodge "."
+    else if (characterInt == 47) {
+        return true;
+    }
+    else if ((characterInt >= 58) && (characterInt <= 62)) {
+        return true;
+    }
+    // Dodge "?"
+    else if (characterInt == 64) {
+        return true;
+    }
+    else if ((characterInt >= 91) && (characterInt <= 96)) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
