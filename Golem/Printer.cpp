@@ -48,13 +48,26 @@ void print(std::string str) {
     }
 }
 
+/* TODO: This is going to get reworked
+// Add in misspellings and corrections to those misspellings
+std::string humanify(std::string str) {
+    std::string out;
+    for (int it{ 0 }; it < str.size(); ++it) {
+
+    }
+
+    return out;
+}
+
 // Construct the vector of ms gaps to come after each letter "typed
 std::vector<int> buildGapVector(std::string str) {
-    Generator letterGenerator(143, 103, 63, 200);
-    Generator sameLetterGenerator(236, 322, 63, 200);   // This is AFTER, not before. I need to redo my analyzer.
-    Generator punctuationGenerator(78, 19, 30, 150);
-    Generator specialCharacterGenerator(90, 16, 30, 150);
-    Generator spaceGenerator(235, 120, 63, 375);
+    // These are sorted by priority of likelihood
+    Generator punctuationGenerator(71, 19, 30, 150);        // After punctuation 
+    Generator spaceGenerator(235, 120, 63, 375);            // Before a space
+    Generator letterGenerator(143, 103, 63, 200);           // After a letter
+    Generator sameLetterGenerator(236, 322, 63, 200);       // This is AFTER, not before. I need to redo my analyzer.
+    Generator specialCharacterGenerator(90, 16, 30, 150);   // This is after a special character.
+    Generator backspaceGenerator(185, 73, 160, 210);        // Placeholder
 
     std::vector<int> gaps{ 0 }; // No gap on the first value printed 
     for (unsigned int it{ 1 }; it < str.size(); ++it) {
@@ -75,10 +88,19 @@ std::vector<int> buildGapVector(std::string str) {
         else if (str[it - 1] == 32) {   // Gap after space
             gaps.push_back(spaceGenerator());
         }
+        else if (str[it - 1] == 8) {    // Gap after a backspace
+            if (str[it - 2] == 8) {     // Gap after a repeated backspace (short, and should never be sooner than the second character)
+                gaps.push_back(135);    // This is like 8-9 per second, which is about as quick as I thought was reasonable for clicks of a single button
+            }
+            else {
+
+            }
+        }
     }
 
     return gaps;
 }
+*/
 
 bool isLetter(char character) {
     return (((character >= 65) && (character <= 90)) || ((character >= 97) && (character <= 122)));

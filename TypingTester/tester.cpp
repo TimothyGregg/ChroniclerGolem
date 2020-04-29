@@ -1,6 +1,7 @@
 #include <chrono>
 #include <cmath>
 #include <conio.h>
+#include <fstream>
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -53,8 +54,9 @@ int main() {
 	std::cout << "\n\nNumber of chars printed:\t" << countCharsPrinted << "\n";
 	std::cout << "Number of intervals printed:\t" << countIntervalsPrinted;
 
-	// TODO: Time after spaces, time after punctuation, time between letters, time between similar letters.
+	// Here begins the "Analytics"
 
+	/* Old version here, used time AFTER typing instead of time before (which seemed like a good idea initially)
 	std::vector<int> timeAfterLetter;
 	std::vector<int> timeAfterSameLetter;
 	std::vector<int> timeAfterSpace;
@@ -62,7 +64,7 @@ int main() {
 	std::vector<int> timeAfterPunctuation;
 	std::vector<int> timeAfterSpecial;
 
-	// TODO: Make this use pointers instead
+	// UPDATE: Make this use pointers instead
 	for (unsigned int it{ 1 }; it < intervals.size(); ++it) {
 		if (isLetter(str[it - 1])) {
 			if ((it > 1) && (str[it - 1] == str[it - 2])) {
@@ -92,6 +94,67 @@ int main() {
 	std::cout << "Average time after special characters: " << average(timeAfterSpecial) << " +/- " << stdev(timeAfterSpecial) << " (" << timeAfterSpecial.size() << " total)\n";
 	std::cout << "Average time after space: " << average(timeAfterSpace) << " +/- " << stdev(timeAfterSpace) << " (" << timeAfterSpace.size() << " total)\n";
 	std::cout << "Average time after backspace: " << average(timeAfterBackspace) << " +/- " << stdev(timeAfterBackspace) << " (" << timeAfterBackspace.size() << " total)\n";
+	*/
+
+	std::vector<int> timeBeforeRepeat;					// Expected: short
+	std::vector<int> timeBeforeSpaceAfterPunctuation;	// Expected: short
+	std::vector<int> timeBeforeSpaceBetweenWords;		// Expected: short
+	std::vector<int> timeBeforePunctuation;				// Expected: average
+	std::vector<int> timeBeforeBackspace;				// Expected: long
+	std::vector<int> timeBeforeSpecialCharacter;		// Expected: average
+	std::vector<int> timeBeforeLetterAtStartOfSentence;	// Expected: very long
+	std::vector<int> timeBeforeLetterAtBeginningOfWord;	// Expected: average
+	std::vector<int> timeBeforeLetterInWord;			// Expected: short
+	std::vector<char> others;							// For wacky things I missed?
+
+	for (unsigned int it{ 1 }; it < intervals.size(); ++it) {	// Skip the first interval, it means nothing
+		if (str[it] == str[it - 1]) {	// The interval came before a repeat
+			timeBeforeRepeat.push_back(intervals[it]);
+		}
+		else if (str[it] == 32) {	// Intervals before spaces
+			if (isPunctuation(str[it - 1])) {	// interval before a space after punctuation
+				timeBeforeSpaceAfterPunctuation.push_back(intervals[it]);
+			}
+			else if (isLetter(str[it - 1])) {	// Interval beofre a space after a letter
+				timeBeforeSpaceBetweenWords.push_back(intervals[it]);
+			}
+		}
+		else if (isPunctuation(str[it])) {	// Intervals before punctuation
+			timeBeforePunctuation.push_back(intervals[it]);
+		}
+		else if (str[it] == 8) {	// Intervals before backspaces
+			timeBeforeBackspace.push_back(intervals[it]);
+		}
+		else if (isSpecialCharacter(str[it])) {	// Intervals before special characters
+			timeBeforeSpecialCharacter.push_back(intervals[it]);
+		}
+		else if (isLetter(str[it])) {	// Intervals before letters
+			if (str[it - 1] == 32) {	// Intervals after a space
+				if ((it > 1) && (isPunctuation(str[it - 2]))) {
+					timeBeforeLetterAtStartOfSentence.push_back(intervals[it]);	// Time before a letter after a punctuation and a space
+				}
+				else {
+					timeBeforeLetterAtBeginningOfWord.push_back(intervals[it]);
+				}
+			}
+			else {
+				timeBeforeLetterInWord.push_back(intervals[it]);
+			}
+		}
+		else {
+			others.push_back(str[it]);
+		}
+	}
+
+	std::ofstream outf{ "RecentTypingTesterLog.txt" };
+	if (!outf) {	// If the file was unopenable
+		std::cerr << "Yo the file was fucked" << std::endl;
+		return 1;
+	}
+	// Print to File
+	{
+		// TODO: Do it here
+	}
 
 	return 0;
 }
@@ -113,6 +176,7 @@ bool isPunctuation(char character) {
 		case 33: // !
 		case 46: // .
 		case 63: // ?
+		case 44: // ,
 			return true;
 		default:
 			return false;
@@ -122,7 +186,11 @@ bool isPunctuation(char character) {
 bool isSpecialCharacter(char character) {
 	int characterInt{ (int)character };
 	// Dodge "!" at the beginning
-	if ((characterInt >= 34) && (characterInt <= 45)) {
+	if ((characterInt >= 34) && (characterInt <= 43)) {
+		return true;
+	}
+	// Dodge ","
+	else if (characterInt == 45) {
 		return true;
 	}
 	// Dodge "."
