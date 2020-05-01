@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <string>
 #include <vector>
 
 // Include Functions
@@ -17,6 +18,8 @@ double stdev(std::vector<int> values);
 
 int main() {
 	std::cout << "You may begin typing at any time. Press escape to end:\n";
+
+	int time{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() };
 	
 	// Variable declaration
 	char pressed{};				// Char, for the most recently pressed key
@@ -32,69 +35,6 @@ int main() {
 		intervals.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 		begin = std::chrono::steady_clock::now();
 	}
-
-	std::cout << "\nLength of str : " << str.length();
-	std::cout << "\nLength of intervals: " << intervals.size() << "\n";
-	
-	int countCharsPrinted{ 0 };
-	// Print tab-spaced str
-	for (unsigned int it{ 0 }; it < str.length(); ++it) {
-		std::cout << str[it] << "|";
-		++countCharsPrinted;
-	}
-	std::cout << "\n";
-
-	int countIntervalsPrinted{ 0 };
-	// Print tab-spaced intervals
-	for (unsigned int it{ 0 }; it < intervals.size(); ++it) {
-		std::cout << intervals[it] << "\t";
-		++countIntervalsPrinted;
-	}
-
-	std::cout << "\n\nNumber of chars printed:\t" << countCharsPrinted << "\n";
-	std::cout << "Number of intervals printed:\t" << countIntervalsPrinted;
-
-	// Here begins the "Analytics"
-
-	/* Old version here, used time AFTER typing instead of time before (which seemed like a good idea initially)
-	std::vector<int> timeAfterLetter;
-	std::vector<int> timeAfterSameLetter;
-	std::vector<int> timeAfterSpace;
-	std::vector<int> timeAfterBackspace;
-	std::vector<int> timeAfterPunctuation;
-	std::vector<int> timeAfterSpecial;
-
-	// UPDATE: Make this use pointers instead
-	for (unsigned int it{ 1 }; it < intervals.size(); ++it) {
-		if (isLetter(str[it - 1])) {
-			if ((it > 1) && (str[it - 1] == str[it - 2])) {
-				timeAfterSameLetter.push_back(intervals[it]);
-			}
-			else {
-				timeAfterLetter.push_back(intervals[it]);
-			}
-		}
-		else if (isPunctuation(str[it - 1])) {
-			timeAfterPunctuation.push_back(intervals[it]);
-		}
-		else if (isSpecialCharacter(str[it - 1])) {
-			timeAfterSpecial.push_back(intervals[it]);
-		}
-		else if (str[it - 1] == 32) {
-			timeAfterSpace.push_back(intervals[it]);
-		}
-		else if (str[it - 1] == 8) {
-			timeAfterBackspace.push_back(intervals[it]);
-		}
-	}
-
-	std::cout << "\n\nAverage time after letters: " << average(timeAfterLetter) << " +/- " << stdev(timeAfterLetter) << " (" << timeAfterLetter.size() << " total)\n";
-	std::cout << "Average time after same letters: " << average(timeAfterSameLetter) << " +/- " << stdev(timeAfterSameLetter) << " (" << timeAfterSameLetter.size() << " total)\n";
-	std::cout << "Average time after punctuation: " << average(timeAfterPunctuation) << " +/- " << stdev(timeAfterPunctuation) << " (" << timeAfterPunctuation.size() << " total)\n";
-	std::cout << "Average time after special characters: " << average(timeAfterSpecial) << " +/- " << stdev(timeAfterSpecial) << " (" << timeAfterSpecial.size() << " total)\n";
-	std::cout << "Average time after space: " << average(timeAfterSpace) << " +/- " << stdev(timeAfterSpace) << " (" << timeAfterSpace.size() << " total)\n";
-	std::cout << "Average time after backspace: " << average(timeAfterBackspace) << " +/- " << stdev(timeAfterBackspace) << " (" << timeAfterBackspace.size() << " total)\n";
-	*/
 
 	std::vector<int> timeBeforeRepeat;					// Expected: short
 	std::vector<int> timeBeforeSpaceAfterPunctuation;	// Expected: short
@@ -146,14 +86,31 @@ int main() {
 		}
 	}
 
-	std::ofstream outf{ "RecentTypingTesterLog.txt" };
-	if (!outf) {	// If the file was unopenable
-		std::cerr << "Yo the file was fucked" << std::endl;
-		return 1;
-	}
+	// Code block just for collapsibility in IDE and visual distinctness
 	// Print to File
 	{
-		// TODO: Do it here
+		std::ofstream outf{ "RecentTypingTesterLog.txt" + std::to_string(time) };
+		if (!outf) {	// If the file was unopenable
+			std::cerr << "Yo the file was fucked" << std::endl;
+			return 1;
+		}
+		outf << "Average time before repeated character: " << average(timeBeforeRepeat) << " +/- " << stdev(timeBeforeRepeat) << " (" << timeBeforeRepeat.size() << " total)\n";
+		outf << "Average time before space after punctuation: " << average(timeBeforeSpaceAfterPunctuation) << " +/- " << stdev(timeBeforeSpaceAfterPunctuation) << " (" << timeBeforeSpaceAfterPunctuation.size() << " total)\n";
+		outf << "Average time before space between words: " << average(timeBeforeSpaceBetweenWords) << " +/- " << stdev(timeBeforeSpaceBetweenWords) << " (" << timeBeforeSpaceBetweenWords.size() << " total)\n";
+		outf << "Average time before punctuation: " << average(timeBeforePunctuation) << " +/- " << stdev(timeBeforePunctuation) << " (" << timeBeforePunctuation.size() << " total)\n";
+		outf << "Average time before backspace: " << average(timeBeforeBackspace) << " +/- " << stdev(timeBeforeBackspace) << " (" << timeBeforeBackspace.size() << " total)\n";
+		outf << "Average time before special character: " << average(timeBeforeSpecialCharacter) << " +/- " << stdev(timeBeforeSpecialCharacter) << " (" << timeBeforeSpecialCharacter.size() << " total)\n";
+		outf << "Average time before letter at start of sentence: " << average(timeBeforeLetterAtStartOfSentence) << " +/- " << stdev(timeBeforeLetterAtStartOfSentence) << " (" << timeBeforeLetterAtStartOfSentence.size() << " total)\n";
+		outf << "Average time before letter at start of word: " << average(timeBeforeLetterAtBeginningOfWord) << " +/- " << stdev(timeBeforeLetterAtBeginningOfWord) << " (" << timeBeforeLetterAtBeginningOfWord.size() << " total)\n";
+		outf << "Average time before letter in word: " << average(timeBeforeLetterInWord) << " +/- " << stdev(timeBeforeLetterInWord) << " (" << timeBeforeLetterInWord.size() << " total)\n";
+		outf << "Others include ascii values: |";
+		for (unsigned int it{ 0 }; it < others.size(); ++it) {
+			outf << static_cast<int>(others[it]) << "|";
+		}
+		outf << "\n\n";
+		for (unsigned int it{ 0 }; it < str.size(); ++it) {
+			outf << "[" << str[it] << " - " << intervals[it] << "]\n";
+		}
 	}
 
 	return 0;

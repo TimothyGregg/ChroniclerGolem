@@ -1,0 +1,10 @@
+Average time before repeated character: 145.214 +/- 17.3583 (14 total)
+Average time before space after punctuation: 103 +/- 35.7071 (10 total)
+Average time before space between words: 134.083 +/- 192.64 (48 total)
+Average time before punctuation: 503.364 +/- 319.437 (11 total)
+Average time before backspace: 508.8 +/- 133.357 (5 total)
+Average time before special character: 125 +/- 0 (1 total)
+Average time before letter at start of sentence: 373 +/- 223.141 (8 total)
+Average time before letter at start of word: 232.37 +/- 159.049 (46 total)
+Average time before letter in word: 159.48 +/- 130.371 (202 total)
+Others include ascii values: |49|54|49|57|54|57|49|50|48|49|57|54|57|

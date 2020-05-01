@@ -143,10 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Declaration.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="tester.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Declaration_Formatted.txt" />
+    <ResourceCompile Include="TypingTester.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

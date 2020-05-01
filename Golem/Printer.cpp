@@ -7,17 +7,16 @@
 // Include Functions
 
 // Functions defined below
-std::vector<int> buildGapVector(std::string str);
+//std::vector<int> buildGapVector(std::string str);
 bool isLetter(char character);
 bool isPunctuation(char character);
 bool isSpecialCharacter(char character);
 
-/* 
-Random numbers on a normal curve within a range
-Stolen from https://stackoverflow.com/a/28619226
-*/
-
 class Generator {
+    /*
+    Random numbers on a normal curve within a range
+    Stolen from https://stackoverflow.com/a/28619226
+    */
     std::default_random_engine generator;
     std::normal_distribution<double> distribution;
     double min;
@@ -37,15 +36,15 @@ public:
 };
 
 void print(std::string str) {
-    std::vector<int> gaps{ buildGapVector(str) };   // ms gaps after each character
+    //std::vector<int> gaps{ buildGapVector(str) };   // ms gaps after each character
     
-    for (unsigned int it{ 0 }; it < str.size(); ++it) {
+    /*for (unsigned int it{ 0 }; it < str.size(); ++it) {
         std::cout << str[it];
         if ((it % 80) == 79) {
             std::cout << "\n";
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(gaps[it]));
-    }
+    }*/
 }
 
 /* TODO: This is going to get reworked
