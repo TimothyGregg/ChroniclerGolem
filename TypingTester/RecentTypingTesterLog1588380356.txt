@@ -1,0 +1,11 @@
+Average time before repeated character: -nan(ind) +/- -nan(ind) (0 total)
+Average time before space after punctuation: -nan(ind) +/- -nan(ind) (0 total)
+Average time before space between words: -nan(ind) +/- -nan(ind) (0 total)
+Average time before punctuation: -nan(ind) +/- -nan(ind) (0 total)
+Average time before backspace: -nan(ind) +/- -nan(ind) (0 total)
+Average time before special character: -nan(ind) +/- -nan(ind) (0 total)
+Average time before letter at start of sentence: -nan(ind) +/- -nan(ind) (0 total)
+Average time before letter at start of word: -nan(ind) +/- -nan(ind) (0 total)
+Average time before letter in word: -nan(ind) +/- -nan(ind) (0 total)
+
+

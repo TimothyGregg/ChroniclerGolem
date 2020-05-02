@@ -19,7 +19,7 @@ double stdev(std::vector<int> values);
 int main() {
 	std::cout << "You may begin typing at any time. Press escape to end:\n";
 
-	int time{ std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() };
+	int time{ static_cast<int>(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count()) };
 	
 	// Variable declaration
 	char pressed{};				// Char, for the most recently pressed key
@@ -29,10 +29,10 @@ int main() {
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();	
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	
-	while ((pressed = _getch()) != 27) {	// 27 is ascii for ESC
+	while ((pressed = static_cast<char>(_getch())) != 27) {	// 27 is ascii for ESC
 		end = std::chrono::steady_clock::now();
 		str += pressed;
-		intervals.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
+		intervals.push_back(static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
 		begin = std::chrono::steady_clock::now();
 	}
 
@@ -89,7 +89,7 @@ int main() {
 	// Code block just for collapsibility in IDE and visual distinctness
 	// Print to File
 	{
-		std::ofstream outf{ "RecentTypingTesterLog.txt" + std::to_string(time) };
+		std::ofstream outf{ "RecentTypingTesterLog" + std::to_string(time) + ".txt" };
 		if (!outf) {	// If the file was unopenable
 			std::cerr << "Yo the file was fucked" << std::endl;
 			return 1;
@@ -103,7 +103,7 @@ int main() {
 		outf << "Average time before letter at start of sentence: " << average(timeBeforeLetterAtStartOfSentence) << " +/- " << stdev(timeBeforeLetterAtStartOfSentence) << " (" << timeBeforeLetterAtStartOfSentence.size() << " total)\n";
 		outf << "Average time before letter at start of word: " << average(timeBeforeLetterAtBeginningOfWord) << " +/- " << stdev(timeBeforeLetterAtBeginningOfWord) << " (" << timeBeforeLetterAtBeginningOfWord.size() << " total)\n";
 		outf << "Average time before letter in word: " << average(timeBeforeLetterInWord) << " +/- " << stdev(timeBeforeLetterInWord) << " (" << timeBeforeLetterInWord.size() << " total)\n";
-		outf << "Others include ascii values: |";
+		if (others.size() > 0) outf << "Others include ascii values: |";
 		for (unsigned int it{ 0 }; it < others.size(); ++it) {
 			outf << static_cast<int>(others[it]) << "|";
 		}
