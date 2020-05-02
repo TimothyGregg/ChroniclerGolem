@@ -6,7 +6,7 @@ void print(std::string str);
 
 int main() {
 	// Contained within dec is the US Declaration of Independence
-	std::string dec{ "The unanimous Declaration of the thirteen united States of America, When in the \
+	/*std::string dec{ "The unanimous Declaration of the thirteen united States of America, When in the \
 Course of human events, it becomes necessary for one people to dissolve the poli\
 tical bands which have connected them with another, and to assume among the powe\
 rs of the earth, the separate and equal station to which the Laws of Nature and \
@@ -107,6 +107,7 @@ levy War, conclude Peace, contract Alliances, establish Commerce, and to do all\
 other Acts and Things which Independent States may of right do. And for the sup\
 port of this Declaration, with a firm reliance on the protection of divine Provi\
 dence, we mutually pledge to each other our Lives, our Fortunes and our sacred H\
-onor." };
+onor." };*/
+	std::string dec{ "This is a much more manageable test string." };
 	print(dec);
 }
